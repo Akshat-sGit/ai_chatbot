@@ -1,4 +1,5 @@
 import 'package:ai_chatbot/widgets/chat_input.dart';
+import 'package:ai_chatbot/widgets/message_bubble.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -39,6 +40,7 @@ class ChatScreen extends StatelessWidget {
                     child: Text('AI'),
                   ),
                 ),
+                MessageBubble(isMe: true, message: "hi hello how are you"),
               ],
             ),
           ),
