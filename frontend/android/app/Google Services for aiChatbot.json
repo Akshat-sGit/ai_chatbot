@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "1009119556249",
+    "project_id": "aichatbot-e5ade",
+    "storage_bucket": "aichatbot-e5ade.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009119556249:android:1623589d372b959d1f3e08",
+        "android_client_info": {
+          "package_name": "com.akshat.ai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0Jou6DqjjcZHFA_lS14ss80f7SmsSClM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009119556249:android:7699033121ecf7741f3e08",
+        "android_client_info": {
+          "package_name": "com.akshat.aichatbot"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0Jou6DqjjcZHFA_lS14ss80f7SmsSClM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009119556249:android:f352010202a1f0921f3e08",
+        "android_client_info": {
+          "package_name": "com.akshat.ap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0Jou6DqjjcZHFA_lS14ss80f7SmsSClM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
