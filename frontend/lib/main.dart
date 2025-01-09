@@ -1,5 +1,5 @@
 import 'package:ai_chatbot/core/theme/app_theme.dart';
-import 'package:ai_chatbot/screens/register_screen.dart';
+import 'package:ai_chatbot/screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'AI Chatbot',
       theme: AppTheme.darkTheme,
       // darkTheme: AppTheme.darkTheme,
-      home:const RegisterScreen(), 
+      home:const WelcomeScreen(), 
     );
   }
 }

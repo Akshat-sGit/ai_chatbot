@@ -4,36 +4,26 @@ import 'package:ai_chatbot/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class SigninScreen extends StatefulWidget {
+  const SigninScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<SigninScreen> createState() => _SigninScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _SigninScreenState extends State<SigninScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
   bool isLoading = false;
 
-  Future<void> registerUser() async {
+  Future<void> signInUser() async {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
-    final confirmPassword = confirmPasswordController.text.trim();
 
-    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+    if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("All fields are required.")),
-      );
-      return;
-    }
-
-    if (password != confirmPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Passwords do not match.")),
       );
       return;
     }
@@ -43,24 +33,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
 
     try {
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(
-                "User registered successfully: ${userCredential.user?.email}")),
+            content:
+                Text("Signed in successfully: ${userCredential.user?.email}")),
       );
-      // go to chat_screen
       Navigator.pushReplacement(
-                context, 
-                MaterialPageRoute(builder: (BuildContext context) =>const ChatScreen()) 
-              ); 
+        context,
+        MaterialPageRoute(builder: (context) => const ChatScreen()),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Registration failed: $e")),
+        SnackBar(content: Text("Sign in failed: $e")),
       );
     } finally {
       setState(() {
@@ -74,11 +60,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: const Text(
-          "Register",
+          "Sign In",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -96,9 +82,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                   TextField(
                     controller: emailController,
-                    decoration:const InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Email",
-                    ).applyDefaults(Theme.of(context).inputDecorationTheme),
+                    ),
                     keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 16),
@@ -106,15 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: passwordController,
                     decoration: const InputDecoration(
                       labelText: "Password",
-                    ).applyDefaults(Theme.of(context).inputDecorationTheme),
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: confirmPasswordController,
-                    decoration:const InputDecoration(
-                      labelText: "Confirm Password",
-                    ).applyDefaults(Theme.of(context).inputDecorationTheme),
+                    ),
                     obscureText: true,
                   ),
                   const SizedBox(height: 24),
@@ -125,9 +103,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
-                    onPressed: registerUser,
+                    onPressed: signInUser,
                     child: const Text(
-                      "Register",
+                      "Sign In",
                       style: TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
                     ),

@@ -1,3 +1,4 @@
+import 'package:ai_chatbot/service/prompt_generator.dart';
 import 'package:flutter/material.dart';
 
 class ChatInput extends StatefulWidget {
@@ -57,6 +58,7 @@ class _ChatInputState extends State<ChatInput> {
                       if (_textController.text.isNotEmpty) {
                         _textController.clear();
                       }
+                      handleGenerateText();
                     },
                     icon: Container(
                       padding: const EdgeInsets.all(4.0),
