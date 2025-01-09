@@ -1,5 +1,7 @@
+import 'package:ai_chatbot/screens/welcome_screen.dart';
 import 'package:ai_chatbot/widgets/chat_input.dart';
 import 'package:ai_chatbot/widgets/message_bubble.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -15,6 +17,26 @@ class ChatScreen extends StatelessWidget {
             'AI Chatbot',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
+          leading: IconButton(
+            icon: const Icon(Icons.messenger_rounded),
+            onPressed: () {
+              // handle back action
+            },
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                // Navigate after logout
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const WelcomeScreen()),
+                );
+              },
+            ),
+          ],
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

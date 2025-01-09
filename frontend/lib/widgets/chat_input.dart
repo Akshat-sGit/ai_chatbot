@@ -27,9 +27,9 @@ class _ChatInputState extends State<ChatInput> {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.10), // Background color
-                borderRadius: BorderRadius.circular(50.0), // Rounded corners
-                border: Border.all(color: Colors.white), // Blue border
+                color: Colors.grey.withOpacity(0.10), 
+                borderRadius: BorderRadius.circular(50.0), 
+                border: Border.all(color: Colors.white), 
               ),
               padding:
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
@@ -56,9 +56,9 @@ class _ChatInputState extends State<ChatInput> {
                   IconButton(
                     onPressed: () {
                       if (_textController.text.isNotEmpty) {
+                        fetchGeneratedPrompt(_textController.text); 
                         _textController.clear();
                       }
-                      handleGenerateText();
                     },
                     icon: Container(
                       padding: const EdgeInsets.all(4.0),

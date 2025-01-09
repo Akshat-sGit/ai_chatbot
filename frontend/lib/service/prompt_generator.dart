@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 
 Future<String> fetchGeneratedPrompt(String prompt) async {
   const String apiUrl = "http://127.0.0.1:5000/generate"; // Replace with your machine's IP
@@ -34,8 +34,7 @@ Future<String> fetchGeneratedPrompt(String prompt) async {
   }
 }
 
-void handleGenerateText() async {
-  String prompt = "Write a haiku about Flutter";
-  String result = await fetchGeneratedPrompt(prompt);
-  debugPrint("Generated text: $result");
-}
+// void handleGenerateText() async {
+//   String result = await fetchGeneratedPrompt(prompt);
+//   debugPrint("Generated text: $result");
+// }
