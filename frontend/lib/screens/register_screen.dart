@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:ai_chatbot/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -52,7 +53,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
             content: Text(
                 "User registered successfully: ${userCredential.user?.email}")),
       );
-      Navigator.pop(context); // Navigate back to the previous screen
+      // go to chat_screen
+      Navigator.pushReplacement(
+                context, 
+                MaterialPageRoute(builder: (BuildContext context) =>const ChatScreen()) 
+              ); 
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Registration failed: $e")),
@@ -85,43 +90,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                   TextField(
                     controller: emailController,
-                    decoration: InputDecoration(
+                    decoration:const InputDecoration(
                       labelText: "Email",
-                      hintText: "Email",
-                      border: OutlineInputBorder(
-                        borderSide:const BorderSide(color: Colors.white, width: 5),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
                     ).applyDefaults(Theme.of(context).inputDecorationTheme),
                     keyboardType: TextInputType.emailAddress,
-
                   ),
                   const SizedBox(height: 16),
                   TextField(
                     controller: passwordController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Password",
-                      enabled: true,
-                      labelStyle: const TextStyle(color: Colors.white),
-                      border: OutlineInputBorder(
-                        borderSide:const BorderSide(color: Colors.white, width: 5),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
+                    ).applyDefaults(Theme.of(context).inputDecorationTheme),
                     obscureText: true,
                   ),
                   const SizedBox(height: 16),
                   TextField(
                     controller: confirmPasswordController,
-                    decoration: InputDecoration(
+                    decoration:const InputDecoration(
                       labelText: "Confirm Password",
-                      hintText: "Confirm Password",
-
-                      border: OutlineInputBorder(
-                         borderSide:const BorderSide(color: Colors.white, width: 5),
-                         borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
+                    ).applyDefaults(Theme.of(context).inputDecorationTheme),
                     obscureText: true,
                   ),
                   const SizedBox(height: 24),
