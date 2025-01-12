@@ -1,19 +1,22 @@
+import 'package:ai_chatbot/service/prompt_generator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ChatInput extends StatefulWidget {
-  const ChatInput({super.key});
+  final Function(String)? onMessageSent; // Optional callback to notify the parent
+
+  const ChatInput({super.key, this.onMessageSent});
 
   @override
-  State<ChatInput> createState() => _ChatInputState();
+  State<ChatInput> createState() => ChatInputState(); // Class name updated
 }
 
-class _ChatInputState extends State<ChatInput> {
-  final _textController = TextEditingController();
+class ChatInputState extends State<ChatInput> {
+  final TextEditingController _textController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final ScrollController _scrollController = ScrollController(); // ScrollController to auto-scroll to the bottom
+  final ScrollController _scrollController = ScrollController();
 
   Future<void> saveMessage(String message) async {
     try {
@@ -24,27 +27,30 @@ class _ChatInputState extends State<ChatInput> {
       }
 
       final userChatsRef = _firestore
-          .collection('users') 
-          .doc(user.uid) 
-          .collection('chats'); 
+          .collection('users')
+          .doc(user.uid)
+          .collection('chats');
 
       await userChatsRef.add({
         'message': message,
-        'sender': user.email, 
-        'time': FieldValue.serverTimestamp(), 
+        'sender': user.email,
+        'time': FieldValue.serverTimestamp(),
       });
 
-      // After saving the message, scroll to the bottom to show the new message
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
+      scrollToBottom(); // Scroll to the bottom after sending
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Failed to send message: $e")),
       );
     }
+  }
+
+  void scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
   }
 
   @override
@@ -68,7 +74,7 @@ class _ChatInputState extends State<ChatInput> {
                 borderRadius: BorderRadius.circular(50.0),
                 border: Border.all(color: Colors.white),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Row(
                 children: [
                   Expanded(
@@ -81,13 +87,12 @@ class _ChatInputState extends State<ChatInput> {
                         hintStyle: TextStyle(color: Colors.white, fontSize: 14.0),
                         contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
                         border: InputBorder.none,
-                        enabledBorder: UnderlineInputBorder(borderSide: BorderSide.none),
-                        focusedBorder: UnderlineInputBorder(borderSide: BorderSide.none),
                       ),
                       onSubmitted: (value) async {
                         if (value.isNotEmpty) {
-                          await saveMessage(value);  // Save message to Firestore
-                          _textController.clear();  // Clear the text field after sending
+                          await saveMessage(value);
+                          widget.onMessageSent?.call(value); // Notify parent
+                          _textController.clear();
                         }
                       },
                     ),
@@ -96,8 +101,10 @@ class _ChatInputState extends State<ChatInput> {
                     onPressed: () async {
                       if (_textController.text.isNotEmpty) {
                         String message = _textController.text.trim();
-                        await saveMessage(message);  // Save message to Firestore
-                        _textController.clear();  // Clear the text field after sending
+                        await saveMessage(message);
+                        widget.onMessageSent?.call(message); 
+                        fetchGeneratedPrompt(message); 
+                        _textController.clear();
                       }
                     },
                     icon: Container(

@@ -82,6 +82,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     return MessageBubble(
                       isMe: isMe,
                       message: message,
+                      senderName: sender,
+                      timestamp: chatData['time'].toDate(),
                     );
                   },
                 );

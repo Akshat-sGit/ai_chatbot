@@ -302,6 +302,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "intl",
+      "rootUri": "file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/intl-0.20.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
       "name": "io",
       "rootUri": "file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/io-1.0.5",
       "packageUri": "lib/",
@@ -602,7 +608,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2025-01-11T14:53:58.959848Z",
+  "generated": "2025-01-12T03:53:22.355667Z",
   "generator": "pub",
   "generatorVersion": "3.5.4",
   "flutterRoot": "file:///Users/akshatagarwal/Development/flutter",
