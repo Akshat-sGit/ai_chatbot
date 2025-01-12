@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class MessageBubble extends StatelessWidget {
   final String message;
   final bool isMe;
-  final String senderName;
-  final DateTime timestamp;
+  final String senderName; // Sender's name for initials
+  final DateTime timestamp; // Timestamp for the message
 
   const MessageBubble({
     super.key,
@@ -22,17 +23,19 @@ class MessageBubble extends StatelessWidget {
       crossAxisAlignment:
           isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
+        // Row for the Avatar and Message Bubble
         Row(
           mainAxisAlignment:
               isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            // Circle Avatar for AI on the left
             if (!isMe)
               const Padding(
-                padding: EdgeInsets.only(right: 8.0),
+                padding:  EdgeInsets.only(right: 8.0),
                 child: CircleAvatar(
                   backgroundColor: Colors.blueAccent,
-                  child: Text(
+                  child:  Text(
                     'AI',
                     style: TextStyle(
                       color: Colors.white,
@@ -47,7 +50,7 @@ class MessageBubble extends StatelessWidget {
               margin: const EdgeInsets.symmetric(vertical: 5),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: isMe ? Colors.grey[300] : Colors.grey[800],
+                color: isMe ? Colors.white : Colors.grey[800],
                 borderRadius: isMe
                     ? const BorderRadius.only(
                         topLeft: Radius.circular(15),
@@ -67,25 +70,29 @@ class MessageBubble extends StatelessWidget {
                 crossAxisAlignment:
                     isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    message,
-                    style: TextStyle(
-                      color: isMe ? Colors.black : Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+                  // Use MarkdownBody to properly render bold and other markdown syntax
+                  MarkdownBody(
+                    data: message,
+                    styleSheet: MarkdownStyleSheet(
+                      p: TextStyle(
+                        color: isMe ? Colors.black : Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
 
+            // Circle Avatar for the User on the right
             if (isMe)
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: CircleAvatar(
                   backgroundColor: Colors.green,
                   child: Text(
-                    senderName[0].toUpperCase(),
+                    senderName[0].toUpperCase(), // First initial of the user's name
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -99,17 +106,17 @@ class MessageBubble extends StatelessWidget {
         // Time below the chat bubble
         Padding(
           padding: const EdgeInsets.only(
-            // left: 8.0,
-            right: 8.0,
+            left: 8.0, // Aligning to left for AI
+            right: 8.0, // Aligning to right for user
             top: 4.0,
           ),
           child: Align(
             alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
             child: Text(
               DateFormat('hh:mm a').format(timestamp),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 10,
-                color: Colors.white70,
+                color: isMe ? Colors.black54 : Colors.white70,
               ),
             ),
           ),

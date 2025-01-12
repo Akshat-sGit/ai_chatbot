@@ -248,6 +248,12 @@
       "languageVersion": "3.1"
     },
     {
+      "name": "flutter_markdown",
+      "rootUri": "file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/flutter_markdown-0.7.5",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///Users/akshatagarwal/Development/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -366,6 +372,12 @@
       "rootUri": "file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/macros-0.1.2-main.4",
       "packageUri": "lib/",
       "languageVersion": "3.4"
+    },
+    {
+      "name": "markdown",
+      "rootUri": "file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/markdown-7.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
     },
     {
       "name": "matcher",
@@ -608,7 +620,7 @@
       "languageVersion": "3.5"
     }
   ],
-  "generated": "2025-01-12T03:53:22.355667Z",
+  "generated": "2025-01-12T04:22:52.665039Z",
   "generator": "pub",
   "generatorVersion": "3.5.4",
   "flutterRoot": "file:///Users/akshatagarwal/Development/flutter",
