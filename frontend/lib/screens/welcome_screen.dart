@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ai_chatbot/screens/register_screen.dart';
 import 'package:ai_chatbot/screens/signin_screen.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -13,9 +14,15 @@ class WelcomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              "AI Chatbot",
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            AnimatedTextKit(
+              animatedTexts: [
+                TyperAnimatedText(
+                  "AI Chatbot", 
+                  textStyle:const TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
+                  speed: const Duration(milliseconds: 300),
+                ),
+              ],
+              totalRepeatCount: 1,
             ),
             const SizedBox(height: 20),
             Padding(
