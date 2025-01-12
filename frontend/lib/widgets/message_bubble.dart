@@ -114,9 +114,9 @@ class MessageBubble extends StatelessWidget {
             alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
             child: Text(
               DateFormat('hh:mm a').format(timestamp),
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 10,
-                color: isMe ? Colors.black54 : Colors.white70,
+                color:  Colors.white70,
               ),
             ),
           ),

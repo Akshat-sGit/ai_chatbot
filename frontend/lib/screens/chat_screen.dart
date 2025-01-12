@@ -79,11 +79,20 @@ class _ChatScreenState extends State<ChatScreen> {
                     final sender = chatData['sender'] ?? '';
                     final isMe = sender == user.email;
 
+                    // Safe way to check and convert the timestamp
+                    final timestamp = chatData['time'];
+                    DateTime dateTime;
+                    if (timestamp is Timestamp) {
+                      dateTime = timestamp.toDate(); // Convert to DateTime if it's a Firestore Timestamp
+                    } else {
+                      dateTime = DateTime.now(); // Default to current time if invalid or missing
+                    }
+
                     return MessageBubble(
                       isMe: isMe,
                       message: message,
                       senderName: sender,
-                      timestamp: chatData['time'].toDate(),
+                      timestamp: dateTime,
                     );
                   },
                 );

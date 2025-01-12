@@ -1,11 +1,14 @@
 import 'package:ai_chatbot/core/theme/app_theme.dart';
+import 'package:ai_chatbot/firebase_options.dart';
 import 'package:ai_chatbot/screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

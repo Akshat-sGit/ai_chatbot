@@ -37,11 +37,13 @@ class _SigninScreenState extends State<SigninScreen> {
           email: email, password: password);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content:
-                Text("Signed in successfully: ${userCredential.user?.email}", style:const TextStyle(color: Colors.black),),
-                backgroundColor: Colors.greenAccent,
-                duration:const Duration(seconds: 2),
-                ),
+          content: Text(
+            "Signed in successfully: ${userCredential.user?.email}",
+            style: const TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.greenAccent,
+          duration: const Duration(seconds: 2),
+        ),
       );
       Navigator.pushReplacement(
         context,
