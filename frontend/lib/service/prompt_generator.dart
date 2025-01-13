@@ -22,7 +22,6 @@ Future<String> fetchGeneratedPrompt(String prompt) async {
     );
 
     if (response.statusCode == 200) {
-      // Parse the response to extract the generated text
       final data = response.data;
       final candidates = data["candidates"] as List<dynamic>;
       if (candidates.isNotEmpty) {
