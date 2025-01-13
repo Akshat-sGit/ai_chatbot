@@ -18,8 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   bool isLoading = false;
 
@@ -30,130 +29,63 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final password = _passwordController.text.trim();
     final confirmPassword = _confirmPasswordController.text.trim();
 
-    // Validate inputs
-    if (name.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-      _showSnackBar("All fields are required.", Colors.redAccent);
-      return;
-    }
+    if (_validateInputs(name, email, password, confirmPassword)) {
+      setState(() => isLoading = true);
 
-    if (password != confirmPassword) {
-      _showSnackBar("Passwords do not match.", Colors.redAccent);
-      return;
-    }
+      try {
+        // Register the user in Firebase Authentication
+        UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
 
-    setState(() => isLoading = true);
+        // Save user details in Firestore
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
+          'userId': userCredential.user!.uid,
+          'name': name,
+          'email': email,
+          'createdAt': DateTime.now().toIso8601String(),
+        });
 
-    try {
-      // Register user in Firebase Authentication
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(email: email, password: password);
+        _showSnackBar("User registered successfully!", Colors.greenAccent);
 
-      // Save user info to Firestore
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userCredential.user!.uid)
-          .set({
-        'userId': userCredential.user!.uid,
-        'name': name,
-        'email': email,
-        'createdAt': DateTime.now().toIso8601String(),
-      });
-
-      _showSnackBar("User registered successfully!", Colors.greenAccent);
-
-      // Navigate to Chat Screen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ChatScreen()),
-      );
-    } catch (e) {
-      _showSnackBar("Registration failed: ${e.toString()}", Colors.redAccent);
-    } finally {
-      setState(() => isLoading = false);
+        // Navigate to ChatScreen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const ChatScreen()),
+        );
+      } catch (e) {
+        _showSnackBar("Registration failed: ${e.toString()}", Colors.redAccent);
+      } finally {
+        setState(() => isLoading = false);
+      }
     }
   }
 
-  /// Displays a snackbar with the provided message and color
-  void _showSnackBar(String message, Color color) {
+  /// Validates user inputs and shows errors if invalid
+  bool _validateInputs(String name, String email, String password, String confirmPassword) {
+    if (name.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
+      _showSnackBar("All fields are required.", Colors.redAccent);
+      return false;
+    }
+    if (password != confirmPassword) {
+      _showSnackBar("Passwords do not match.", Colors.redAccent);
+      return false;
+    }
+    return true;
+  }
+
+  /// Displays a snackbar with the provided message and background color
+  void _showSnackBar(String message, Color backgroundColor) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message, style: const TextStyle(color: Colors.black)),
-        backgroundColor: color,
+        backgroundColor: backgroundColor,
         duration: const Duration(seconds: 2),
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: const Text("Register", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const WelcomeScreen()),
-            );
-          },
-        ),
-      ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _buildTextField(
-                      controller: _nameController,
-                      labelText: "Name",
-                      keyboardType: TextInputType.name,
-                    ),
-                    const SizedBox(height: 16),
-                    _buildTextField(
-                      controller: _emailController,
-                      labelText: "Email",
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    const SizedBox(height: 16),
-                    _buildTextField(
-                      controller: _passwordController,
-                      labelText: "Password",
-                      obscureText: true,
-                    ),
-                    const SizedBox(height: 16),
-                    _buildTextField(
-                      controller: _confirmPasswordController,
-                      labelText: "Confirm Password",
-                      obscureText: true,
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                      onPressed: _registerUser,
-                      child: const Text(
-                        "Register",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
     );
   }
 
@@ -181,6 +113,89 @@ class _RegisterScreenState extends State<RegisterScreen> {
       keyboardType: keyboardType,
       obscureText: obscureText,
       style: const TextStyle(color: Colors.white),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: const Text("Register", style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+            );
+          },
+        ),
+      ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double maxWidth = constraints.maxWidth;
+          double containerWidth = maxWidth > 600 ? 500 : maxWidth * 0.9;
+
+          return isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Center(
+                  child: Container(
+                    width: containerWidth,
+                    padding: const EdgeInsets.all(16.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _buildTextField(
+                            controller: _nameController,
+                            labelText: "Name",
+                            keyboardType: TextInputType.name,
+                          ),
+                          const SizedBox(height: 16),
+                          _buildTextField(
+                            controller: _emailController,
+                            labelText: "Email",
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+                          const SizedBox(height: 16),
+                          _buildTextField(
+                            controller: _passwordController,
+                            labelText: "Password",
+                            obscureText: true,
+                          ),
+                          const SizedBox(height: 16),
+                          _buildTextField(
+                            controller: _confirmPasswordController,
+                            labelText: "Confirm Password",
+                            obscureText: true,
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.all(16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            onPressed: _registerUser,
+                            child: const Text(
+                              "Register",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+        },
+      ),
     );
   }
 }

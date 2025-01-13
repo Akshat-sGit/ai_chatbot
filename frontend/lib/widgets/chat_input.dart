@@ -9,14 +9,13 @@ class ChatInput extends StatefulWidget {
   const ChatInput({super.key, this.onMessageSent});
 
   @override
-  State<ChatInput> createState() => ChatInputState(); // Class name updated
+  State<ChatInput> createState() => ChatInputState();
 }
 
 class ChatInputState extends State<ChatInput> {
   final TextEditingController _textController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final ScrollController _scrollController = ScrollController();
 
   Future<void> saveMessage(String message) async {
     try {
@@ -37,20 +36,12 @@ class ChatInputState extends State<ChatInput> {
         'time': FieldValue.serverTimestamp(),
       });
 
-      scrollToBottom(); // Scroll to the bottom after sending
+      widget.onMessageSent?.call(message); // Notify parent about the message
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Failed to send message: $e")),
       );
     }
-  }
-
-  void scrollToBottom() {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOut,
-    );
   }
 
   @override
@@ -91,7 +82,6 @@ class ChatInputState extends State<ChatInput> {
                       onSubmitted: (value) async {
                         if (value.isNotEmpty) {
                           await saveMessage(value);
-                          widget.onMessageSent?.call(value); // Notify parent
                           _textController.clear();
                         }
                       },
@@ -102,8 +92,7 @@ class ChatInputState extends State<ChatInput> {
                       if (_textController.text.isNotEmpty) {
                         String message = _textController.text.trim();
                         await saveMessage(message);
-                        widget.onMessageSent?.call(message); 
-                        fetchGeneratedPrompt(message); 
+                        fetchGeneratedPrompt(message); // Your existing prompt generator logic
                         _textController.clear();
                       }
                     },

@@ -3,6 +3,7 @@
 import 'package:ai_chatbot/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ai_chatbot/util/resonsive/dimensions.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -77,47 +78,110 @@ class _SigninScreenState extends State<SigninScreen> {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextField(
-                    controller: emailController,
-                    decoration: const InputDecoration(
-                      labelText: "Email",
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: passwordController,
-                    decoration: const InputDecoration(
-                      labelText: "Password",
-                    ),
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
-                    onPressed: signInUser,
-                    child: const Text(
-                      "Sign In",
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: isDesktop(context) ? 200 : 16,
+                vertical: isDesktop(context) ? 50 : 16,
               ),
-      ),
+              child: isDesktop(context)
+                  ? Row(
+                      children: [
+                        const Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Welcome Back!",
+                                style: TextStyle(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                "Sign in to continue chatting with our AI.",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white70,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: _buildForm(),
+                        ),
+                      ],
+                    )
+                  : _buildForm(),
+            ),
+    );
+  }
+
+  Widget _buildForm() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        TextField(
+          controller: emailController,
+          decoration: InputDecoration(
+            labelText: "Email",
+            labelStyle: const TextStyle(color: Colors.white70),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.white70),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.white),
+              borderRadius: BorderRadius.circular(15),
+            ),
+          ),
+          style: const TextStyle(color: Colors.white),
+          keyboardType: TextInputType.emailAddress,
+        ),
+        const SizedBox(height: 16),
+        TextField(
+          controller: passwordController,
+          decoration:  InputDecoration(
+            labelText: "Password",
+            labelStyle: const TextStyle(color: Colors.white70),
+            enabledBorder:OutlineInputBorder(
+              borderSide:const BorderSide(color: Colors.white70),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide:const BorderSide(color: Colors.white),
+              borderRadius: BorderRadius.circular(15),
+            ),
+          ),
+          style: const TextStyle(color: Colors.white),
+          obscureText: true,
+        ),
+        const SizedBox(height: 24),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.all(16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+          ),
+          onPressed: signInUser,
+          child: const Text(
+            "Sign In",
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

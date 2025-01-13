@@ -15,12 +15,31 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final ScrollController _scrollController =
+      ScrollController(); // Added ScrollController
+
+  @override
+  void dispose() {
+    _scrollController.dispose(); // Dispose the ScrollController
+    super.dispose();
+  }
+
+  /// Scrolls to the bottom of the chat when called
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.minScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final user = _auth.currentUser;
     if (user == null) {
-      // Handle user not logged in
+      // Redirect user to WelcomeScreen if not logged in
       return const WelcomeScreen();
     }
 
@@ -31,12 +50,6 @@ class _ChatScreenState extends State<ChatScreen> {
         title: const Text(
           'AI Chatbot',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.chat_bubble_outline),
-          onPressed: () {
-            // handle back action
-          },
         ),
         actions: [
           IconButton(
@@ -53,54 +66,75 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: _firestore
-                  .collection('users')
-                  .doc(user.uid)
-                  .collection('chats')
-                  .orderBy('time', descending: true)
-                  .snapshots(),
-              builder: (ctx, chatSnapshot) {
-                if (chatSnapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                final chatDocs = chatSnapshot.data?.docs ?? [];
-
-                return ListView.builder(
-                  reverse: true,  // So messages appear in the correct order
-                  itemCount: chatDocs.length,
-                  itemBuilder: (ctx, index) {
-                    final chatData = chatDocs[index];
-                    final message = chatData['message'] ?? '';
-                    final sender = chatData['sender'] ?? '';
-                    final isMe = sender == user.email;
-
-                    // Safe way to check and convert the timestamp
-                    final timestamp = chatData['time'];
-                    DateTime dateTime;
-                    if (timestamp is Timestamp) {
-                      dateTime = timestamp.toDate(); // Convert to DateTime if it's a Firestore Timestamp
-                    } else {
-                      dateTime = DateTime.now(); // Default to current time if invalid or missing
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Column(
+            children: [
+              Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: _firestore
+                      .collection('users')
+                      .doc(user.uid)
+                      .collection('chats')
+                      .orderBy('time', descending: true)
+                      .snapshots(),
+                  builder: (ctx, chatSnapshot) {
+                    if (chatSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
                     }
 
-                    return MessageBubble(
-                      isMe: isMe,
-                      message: message,
-                      senderName: sender,
-                      timestamp: dateTime,
+                    final chatDocs = chatSnapshot.data?.docs ?? [];
+
+                    return ListView.builder(
+                      controller:
+                          _scrollController, // Attach the ScrollController
+                      reverse: true, // So messages appear in the correct order
+                      itemCount: chatDocs.length,
+                      itemBuilder: (ctx, index) {
+                        final chatData = chatDocs[index];
+                        final message = chatData['message'] ?? '';
+                        final sender = chatData['sender'] ?? '';
+                        final isMe = sender == user.email;
+
+                        // Safe way to check and convert the timestamp
+                        final timestamp = chatData['time'];
+                        DateTime dateTime;
+                        if (timestamp is Timestamp) {
+                          dateTime = timestamp.toDate(); // Convert to DateTime
+                        } else {
+                          dateTime =
+                              DateTime.now(); // Default to now if invalid
+                        }
+
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: constraints.maxWidth > 600 ? 100 : 10,
+                          ), // Add padding for larger screens
+                          child: MessageBubble(
+                            isMe: isMe,
+                            message: message,
+                            senderName: sender,
+                            timestamp: dateTime,
+                          ),
+                        );
+                      },
                     );
                   },
-                );
-              },
-            ),
-          ),
-          const ChatInput(),
-        ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: constraints.maxWidth > 600 ? 100 : 10,
+                ), // Adjust input padding for larger screens
+                child: ChatInput(
+                  onMessageSent: (message) =>
+                      _scrollToBottom(), // Match the required signature
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
