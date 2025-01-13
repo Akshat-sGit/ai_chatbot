@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 Future<String> fetchGeneratedPrompt(String prompt) async {
-  const String apiUrl = "http://127.0.0.1:8000/generate"; 
+  const String apiUrl = "http://127.0.0.1:5001/generate"; 
   final dio = Dio();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
