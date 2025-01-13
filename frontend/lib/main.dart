@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'AI Chatbot',
       theme: AppTheme.darkTheme,
+      debugShowCheckedModeBanner: false,
       home:const WelcomeScreen(),
     );
   }

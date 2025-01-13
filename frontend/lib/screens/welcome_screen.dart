@@ -16,9 +16,12 @@ class WelcomeScreen extends StatelessWidget {
           children: [
             AnimatedTextKit(
               animatedTexts: [
-                TyperAnimatedText(
-                  "AI Chatbot", 
-                  textStyle:const TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
+                WavyAnimatedText(
+                  "AI Chatbot",
+                  textStyle: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                   speed: const Duration(milliseconds: 300),
                 ),
               ],
