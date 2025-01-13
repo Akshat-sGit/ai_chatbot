@@ -1,3 +1,4 @@
+import 'package:ai_chatbot/util/resonsive/dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_chatbot/screens/register_screen.dart';
 import 'package:ai_chatbot/screens/signin_screen.dart';
@@ -11,7 +12,8 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
-        child: Column(
+        child: isDesktop(context) ? null
+         : Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AnimatedTextKit(
