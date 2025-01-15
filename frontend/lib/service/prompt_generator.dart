@@ -10,7 +10,6 @@ Future<String> fetchGeneratedPrompt(String prompt) async {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   try {
-    // Send the request to the API
     Response response = await dio.post(
       apiUrl,
       data: {"prompt": prompt},

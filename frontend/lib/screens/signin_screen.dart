@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:ai_chatbot/screens/chat_screen.dart';
+import 'package:ai_chatbot/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ai_chatbot/util/resonsive/dimensions.dart';
@@ -74,7 +75,10 @@ class _SigninScreenState extends State<SigninScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+            );
           },
         ),
       ),
