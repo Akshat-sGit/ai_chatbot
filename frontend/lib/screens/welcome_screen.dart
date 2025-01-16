@@ -27,7 +27,7 @@ class WelcomeScreen extends StatelessWidget {
                           AnimatedTextKit(
                             animatedTexts: [
                               TypewriterAnimatedText(
-                                "Welcome to AI Chatbot",
+                                "Welcome to A.M.Y",
                                 textStyle: const TextStyle(
                                   fontSize: 40,
                                   fontWeight: FontWeight.bold,
@@ -38,7 +38,7 @@ class WelcomeScreen extends StatelessWidget {
                             ],
                             totalRepeatCount: 1,
                           ),
-                          const SizedBox(height: 30), // Adjusted spacing
+                          const SizedBox(height: 30), 
                           const Text(
                             "Experience smart AI-driven conversations, all from your devices!",
                             textAlign: TextAlign.center,
@@ -49,7 +49,7 @@ class WelcomeScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                              height: 50), // Added spacing before buttons
+                              height: 50),
                         ],
                       ),
                     ),
@@ -86,7 +86,7 @@ class WelcomeScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(
-                                height: 30), // Added spacing between buttons
+                                height: 30),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 padding: const EdgeInsets.all(20),
@@ -122,8 +122,8 @@ class WelcomeScreen extends StatelessWidget {
                 children: [
                   AnimatedTextKit(
                     animatedTexts: [
-                      WavyAnimatedText(
-                        "AI Chatbot",
+                      TyperAnimatedText(
+                        "A.M.Y",
                         textStyle: const TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -166,7 +166,7 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                            width: 20), // Adjusted spacing between buttons
+                            width: 20),
                         Expanded(
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(

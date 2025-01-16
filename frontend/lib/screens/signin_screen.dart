@@ -1,10 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:ai_chatbot/screens/chat_screen.dart';
 import 'package:ai_chatbot/screens/welcome_screen.dart';
+import 'package:ai_chatbot/service/signin.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ai_chatbot/util/resonsive/dimensions.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -14,53 +10,7 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  bool isLoading = false;
-
-  Future<void> signInUser() async {
-    final email = emailController.text.trim();
-    final password = passwordController.text.trim();
-
-    if (email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("All fields are required.")),
-      );
-      return;
-    }
-
-    setState(() {
-      isLoading = true;
-    });
-
-    try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            "Signed in successfully: ${userCredential.user?.email}",
-            style: const TextStyle(color: Colors.black),
-          ),
-          backgroundColor: Colors.greenAccent,
-          duration: const Duration(seconds: 2),
-        ),
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ChatScreen()),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Sign in failed: $e")),
-      );
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
+  final SignInService _signInService = SignInService();
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +32,7 @@ class _SigninScreenState extends State<SigninScreen> {
           },
         ),
       ),
-      body: isLoading
+      body: _signInService.isLoading
           ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: EdgeInsets.symmetric(
@@ -98,74 +48,39 @@ class _SigninScreenState extends State<SigninScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Welcome Back!",
-                                style: TextStyle(
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                "Sign in to continue chatting with our AI.",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.white70,
-                                ),
-                              ),
+                              // Add your widgets here
                             ],
                           ),
                         ),
                         Expanded(
                           flex: 1,
-                          child: _buildForm(),
+                          child: _buildSignInForm(context),
                         ),
                       ],
                     )
-                  : _buildForm(),
+                  : _buildSignInForm(context),
             ),
     );
   }
 
-  Widget _buildForm() {
+  Widget _buildSignInForm(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextField(
-          controller: emailController,
-          decoration: InputDecoration(
+          controller: _signInService.emailController,
+          decoration: const InputDecoration(
             labelText: "Email",
-            labelStyle: const TextStyle(color: Colors.white70),
-            enabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.white70),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.white),
-              borderRadius: BorderRadius.circular(15),
-            ),
           ),
-          style: const TextStyle(color: Colors.white),
           keyboardType: TextInputType.emailAddress,
         ),
         const SizedBox(height: 16),
         TextField(
-          controller: passwordController,
-          decoration:  InputDecoration(
+          controller: _signInService.passwordController,
+          decoration: const InputDecoration(
             labelText: "Password",
-            labelStyle: const TextStyle(color: Colors.white70),
-            enabledBorder:OutlineInputBorder(
-              borderSide:const BorderSide(color: Colors.white70),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide:const BorderSide(color: Colors.white),
-              borderRadius: BorderRadius.circular(15),
-            ),
           ),
-          style: const TextStyle(color: Colors.white),
           obscureText: true,
         ),
         const SizedBox(height: 24),
@@ -176,16 +91,17 @@ class _SigninScreenState extends State<SigninScreen> {
               borderRadius: BorderRadius.circular(15),
             ),
           ),
-          onPressed: signInUser,
+          onPressed: () => _signInService.signInUser(context),
           child: const Text(
             "Sign In",
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),
       ],
     );
+  }
+
+  bool isDesktop(BuildContext context) {
+    return MediaQuery.of(context).size.width > 600;
   }
 }

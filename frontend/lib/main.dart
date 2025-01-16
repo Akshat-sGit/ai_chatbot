@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'AI Chatbot',
+      title: 'AMY',
       theme: AppTheme.darkTheme,
       debugShowCheckedModeBanner: false,
       home:const WelcomeScreen(),
