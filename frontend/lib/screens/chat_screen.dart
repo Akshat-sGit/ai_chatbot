@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:ai_chatbot/screens/welcome_screen.dart';
 import 'package:ai_chatbot/widgets/chat_input.dart';
 import 'package:ai_chatbot/widgets/message_bubble.dart';
@@ -9,22 +11,22 @@ class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final ScrollController _scrollController =
-      ScrollController(); // Added ScrollController
+      ScrollController();
 
   @override
   void dispose() {
-    _scrollController.dispose(); // Dispose the ScrollController
+    _scrollController.dispose();
     super.dispose();
   }
 
-  /// Scrolls to the bottom of the chat when called
+
   void _scrollToBottom() {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
@@ -39,7 +41,6 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     final user = _auth.currentUser;
     if (user == null) {
-      // Redirect user to WelcomeScreen if not logged in
       return const WelcomeScreen();
     }
 
@@ -139,3 +140,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
+
+
+
