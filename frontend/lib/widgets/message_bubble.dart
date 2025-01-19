@@ -32,10 +32,10 @@ class MessageBubble extends StatelessWidget {
             // Circle Avatar for AI on the left
             if (!isMe)
               const Padding(
-                padding:  EdgeInsets.only(right: 8.0),
+                padding: EdgeInsets.only(right: 8.0),
                 child: CircleAvatar(
                   backgroundColor: Colors.blueAccent,
-                  child:  Text(
+                  child: Text(
                     'AI',
                     style: TextStyle(
                       color: Colors.white,
@@ -64,13 +64,12 @@ class MessageBubble extends StatelessWidget {
                       ),
               ),
               constraints: BoxConstraints(
-                maxWidth: isMe ? width * 0.35 : width * 0.65,
+                maxWidth:  width * 0.65,
               ),
               child: Column(
                 crossAxisAlignment:
                     isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                 children: [
-                  // Use MarkdownBody to properly render bold and other markdown syntax
                   MarkdownBody(
                     data: message,
                     styleSheet: MarkdownStyleSheet(
@@ -92,7 +91,8 @@ class MessageBubble extends StatelessWidget {
                 child: CircleAvatar(
                   backgroundColor: Colors.green,
                   child: Text(
-                    senderName[0].toUpperCase(), // First initial of the user's name
+                    senderName[0]
+                        .toUpperCase(), // First initial of the user's name
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -116,7 +116,7 @@ class MessageBubble extends StatelessWidget {
               DateFormat('hh:mm a').format(timestamp),
               style: const TextStyle(
                 fontSize: 10,
-                color:  Colors.white70,
+                color: Colors.white70,
               ),
             ),
           ),
