@@ -166,6 +166,10 @@ flutter_markdown
 3.4
 file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/flutter_markdown-0.7.5/
 file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/flutter_markdown-0.7.5/lib/
+flutter_riverpod
+2.17
+file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/flutter_riverpod-2.6.1/
+file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/flutter_riverpod-2.6.1/lib/
 frontend_server_client
 3.0
 file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/frontend_server_client-4.0.0/
@@ -310,6 +314,10 @@ pubspec_parse
 3.2
 file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/pubspec_parse-1.4.0/
 file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/pubspec_parse-1.4.0/lib/
+riverpod
+2.17
+file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/riverpod-2.6.1/
+file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/riverpod-2.6.1/lib/
 shelf
 2.17
 file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/shelf-1.4.1/
@@ -334,6 +342,10 @@ stack_trace
 2.18
 file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/stack_trace-1.11.1/
 file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/stack_trace-1.11.1/lib/
+state_notifier
+2.12
+file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/state_notifier-1.0.0/
+file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/state_notifier-1.0.0/lib/
 stream_channel
 2.19
 file:///Users/akshatagarwal/.pub-cache/hosted/pub.dev/stream_channel-2.1.2/
