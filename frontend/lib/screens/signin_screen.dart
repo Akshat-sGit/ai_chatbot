@@ -1,5 +1,6 @@
 import 'package:ai_chatbot/screens/welcome_screen.dart';
 import 'package:ai_chatbot/service/signin.dart';
+import 'package:ai_chatbot/util/resonsive/dimensions.dart';
 import 'package:flutter/material.dart';
 
 class SigninScreen extends StatefulWidget {
@@ -114,9 +115,5 @@ class _SigninScreenState extends State<SigninScreen> {
         ),
       ],
     );
-  }
-
-  bool isDesktop(BuildContext context) {
-    return MediaQuery.of(context).size.width > 600;
   }
 }
